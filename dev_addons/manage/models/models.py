@@ -79,7 +79,7 @@ class task(models.Model):
                                   column1="task_id",
                                   column2="technology_id"
                                   )
-    developer=fields.Many2one('res.partner')
+    developer=fields.Many2many('res.partner')
 
     # def _get_code(self):
     #     for task in self:
@@ -138,6 +138,37 @@ class bug(models.Model):
                                   column1="bug1_id",
                                   column2="bug2_id"
                                   )
+    
+    improvement_linked=fields.Many2many(comodel_name="manage.improvement",
+                                  relation="improvements_bugs",
+                                  column1="bug_id",
+                                  column2="improvement_id"
+                                  )
+
+    developers=fields.Many2many(comodel_name="res.partner",
+                                  relation="developers_bugs",
+                                  column1="bug_id",
+                                  column2="developer_id"
+                                )
+
+class improvement(models.Model):
+    _name = 'manage.improvement'
+    _description = 'manage.improvement'
+    _inherit = 'manage.task'
+
+    technologies=fields.Many2many(comodel_name="manage.technology",
+                                  relation="technologies_improvements",
+                                  column1="improvement_id",
+                                  column2="technology_id"
+                                  )
+    histories_linked=fields.Many2many('manage.history')
+
+    developers=fields.Many2many(comodel_name="res.partner",
+                                  relation="developers_improvements",
+                                  column1="improvement_id",
+                                  column2="developer_id"
+                                )
+
 #SPRINT
 class sprint(models.Model):
     _name = 'manage.sprint'
